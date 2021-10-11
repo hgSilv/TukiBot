@@ -1,0 +1,28 @@
+{
+  "name": "tukibot",
+  "version": "0.0.0",
+  "description": "Admin-aid and jokester bot. TUKI!",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hgSilv/TukiBot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "hgSilv PauArvizu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hgSilv/TukiBot/issues"
+  },
+  "homepage": "https://github.com/hgSilv/TukiBot#readme",
+  "dependencies": {
+    "discord.js": "^13.2.0",
+    "dotenv": "^10.0.0"
+  }
+}
