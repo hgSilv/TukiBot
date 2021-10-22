@@ -1,4 +1,4 @@
-
+node_modules
 node_modules/
 node_modules/discord.js/typings/tests.ts
 node_modules/discord.js/typings/rawDataTypes.d.ts
@@ -316,3 +316,7 @@ node_modules/@sapphire/async-queue/dist/index.umd.js
 node_modules/@sapphire/async-queue/dist/index.mjs
 node_modules/@sapphire/async-queue/dist/index.js
 node_modules/@sapphire/async-queue/dist/index.d.ts
+node_modules/.package-lock.json
+package-lock.json
+package.json
+.env
