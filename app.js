@@ -1,5 +1,5 @@
 require('dotenv').config()
-
+const axios = require('axios');
 const Discord = require('discord.js');
 
 const bot = new Discord.Client({
@@ -10,6 +10,7 @@ const bot = new Discord.Client({
 let bannedWords = [
   "hola", "adios"
 ];
+const lambdaGetEndpoint = 'https://ij705at6b0.execute-api.us-east-1.amazonaws.com/getServerWordList';
 const commandPrefix = "!";
 
 // const channel = await bot.channels.get('897207800831307796');
@@ -52,6 +53,8 @@ bot.on('messageCreate', msg => {
 
       console.log(bannedWords);
       return msg.reply(`updated banned words list:\n[${bannedWords.toString()}]`);
+    } else if (message.toLocaleLowerCase() == "!getaxios") {
+      axiosHTTPRequest();
     } else {
       return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
     }
@@ -64,9 +67,21 @@ bot.on('messageCreate', msg => {
     console.log(msg);
     return msg.reply('banned word detected in message: ' + bannedWords[found]);
   }
-
-
 });
+
+function axiosHTTPRequest() {
+  // Make a request for a user with a given ID
+  axios.get(lambdaGetEndpoint)
+    .then(function (response) {  // handle success
+      console.log(response);
+    })
+    .catch(function (error) { // handle error
+      console.log(error);
+    })
+    .then(function () { // always executed
+      console.log('end of request');
+    });
+}
 
 //This has to be last line of the script
 bot.login(process.env.BOT_TOKEN);
