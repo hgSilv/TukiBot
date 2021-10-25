@@ -7,7 +7,7 @@ const bot = new Discord.Client({
 });
 
 
-let bannedWords = [
+var bannedWords = [
   "hola", "adios"
 ];
 
@@ -90,8 +90,8 @@ function axiosHTTPRequest() {
 function getBannedWords() {
     axios.get(lambdaGetEndpoint)
         .then(function (response) {
-            JSON.stringify(response.data.Item.bannedWords.SS);
-            console.log(list);
+          console.log(response);
+            bannedWords = response.data.Item.bannedWords.SS;
         })
         .catch(function (error) {
             console.log(error);
