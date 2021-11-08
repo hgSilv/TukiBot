@@ -8,7 +8,7 @@ const bot = new Discord.Client({
 
 
 var bannedWords = [
-    "hola", "adios"
+    
 ];
 
 
@@ -16,13 +16,10 @@ const lambdaGetEndpoint = 'https://hnumqbz3j6.execute-api.us-east-1.amazonaws.co
 const commandPrefix = "!";
 
 
-// const channel = await bot.channels.get('897207800831307796');
 
 bot.once('ready', client => {
     console.log('================================= CHAT MOD =================================');
-    //console.log(client);
-    // client.channels.cache.get('897207800831307796').send('TUKI BOT ready! :)'); //send message to "test" channel
-    getBannedWords();
+    //getBannedWords();
 });
 
 
@@ -40,15 +37,15 @@ bot.on('messageCreate', msg => {
             return msg.reply('hello to you! :)');
         }
 
-        // --- addBannedWords
-        if (message.startsWith("!addbannedwords")) {
+        // --- addBannedWord
+        if (message.startsWith("!addbannedword")) {
             // extract command from the rest of the string
             const match = message.toLowerCase().match(/^(![\w\-]+) (.+)/i);
             const command = {
                 command: match[1], //first word (command)
                 args: match[2].split(",").map(str => str.trim()) // args cleaned up (no spaces)
             };
-
+            getBannedWords(msg.guildId);
             //add words
             bannedWords.push(...command.args);
 
@@ -60,12 +57,23 @@ bot.on('messageCreate', msg => {
             return msg.reply(`updated banned words list:\n[${bannedWords.toString()}]`);
         } else if (message.toLocaleLowerCase() == "!getaxios") {
             axiosHTTPRequest();
-        } else {
+
+            // --- deleteBannedWords : !deleteBannedWord <will delete the banned word from banned word list>
+        } else if (message.startsWith('!deletebannedwords')){
+            //TODO: Implement delete word 
+
+        } else if (message.startsWith('!getJoke')) {
+            //Do nothing
+        }
+        
+        
+        else {
             return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
         }
     }
 
     // ===== banned words handler =====
+    getBannedWords(msg.guildId);
     const found = bannedWords.findIndex(str => message.toLowerCase().includes(str));
 
     if (found != -1) {
@@ -91,8 +99,12 @@ function axiosHTTPRequest() {
         });
 }
 
-function getBannedWords() {
-    axios.get(lambdaGetEndpoint)
+function getBannedWords(serverID) {
+    axios({
+        method: 'get',
+        url: lambdaGetEndpoint + '/' + serverID,
+        headers: {'Content-Type': 'application/json'}
+    })
         .then(function (response) {
             //   console.log(response);
             bannedWords = response.data.Item.bannedWords.SS;
