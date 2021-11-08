@@ -16,3 +16,23 @@ Este comando permite al usuario eliminar palabras que estén en su lista de pala
 
 !bannedwordslist (aun no implementado)
 Este comando hará que el bot te muestre la lista de palabras que estén en la lista de palabras prohibidas.
+
+
+## Firebase functions
+Antes de hacer deploy a una funcion de firebase, probar con
+
+```
+firebase emulators:start
+```
+
+### Deploy de funciones
+```
+firebase deploy --only functions
+```
+
+>By default, the Firebase CLI looks in the functions/ folder for the source code. You can specify another folder by adding the following lines in firebase.json:
+```
+"functions": {
+  "source": "another-folder"
+}
+```
