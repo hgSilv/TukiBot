@@ -7,9 +7,7 @@ const bot = new Discord.Client({
 });
 
 
-var bannedWords = [
-  "hola", "adios"
-];
+let bannedWords = [];
 
 
 const lambdaGetEndpoint = 'https://hnumqbz3j6.execute-api.us-east-1.amazonaws.com/dev-v1/bannedwords-';
@@ -19,7 +17,7 @@ const commandPrefix = "!";
 // const channel = await bot.channels.get('897207800831307796');
 
 bot.once('ready', client => {
-    console.log('================================= TUKI BOT =================================');
+    console.log('================================= CHAT MOD =================================');
     //console.log(client);
     // client.channels.cache.get('897207800831307796').send('TUKI BOT ready! :)'); //send message to "test" channel
     getBannedWords();
@@ -76,7 +74,7 @@ bot.on('messageCreate', msg => {
 function axiosHTTPRequest() {
     // Make a request for a user with a given ID
     axios.get(lambdaGetEndpoint)
-        .then(function (response) {  // handle success
+        .then(function (response) { // handle success
             console.log(response.data);
         })
         .catch(function (error) { // handle error
@@ -90,14 +88,14 @@ function axiosHTTPRequest() {
 function getBannedWords() {
     axios.get(lambdaGetEndpoint)
         .then(function (response) {
-          console.log(response);
+            //   console.log(response);
             bannedWords = response.data.Item.bannedWords.SS;
         })
         .catch(function (error) {
             console.log(error);
         })
         .then(function () {
-            console.log('Got servers banned word list');
+            console.log("Got server's banned word list");
         });
 }
 
