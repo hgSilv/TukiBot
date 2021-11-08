@@ -8,7 +8,7 @@ const bot = new Discord.Client({
 
 
 var bannedWords = [
-    
+
 ];
 
 
@@ -23,14 +23,14 @@ bot.once('ready', client => {
 });
 
 
-bot.on('messageCreate', msg => {
+bot.on('messageCreate', async (msg) => {
     //console.log(msg);
     //ignore messages from bot
     if (msg.author.bot) return;
 
-    getBannedWords(msg.guildId);
+    await getBannedWords(msg.guildId);
 
-    const message = msg.content;
+    const message = msg.content.toLowerCase();
 
     // ===== command handler =====
     if (message.startsWith(commandPrefix)) {
@@ -47,7 +47,7 @@ bot.on('messageCreate', msg => {
                 command: match[1], //first word (command)
                 args: match[2].split(",").map(str => str.trim()) // args cleaned up (no spaces)
             };
-            getBannedWords(msg.guildId);
+            await getBannedWords(msg.guildId);
             //add words
             bannedWords.push(...command.args);
 
@@ -57,44 +57,21 @@ bot.on('messageCreate', msg => {
             updateBannedWords(msg.guildId, bannedWords); //Updates servers banned word list on the dynamoDB table
             console.log(bannedWords);
             return msg.reply(`updated banned words list:\n[${bannedWords.toString()}]`);
-        }
-        
-        else if (message.startsWith('!deletebannedword')){
+        } else if (message.startsWith('!deletebannedword')) {
             //TODO: Implement delete word 
+            deleteBannedWord(msg);
+            return;
 
-            const match = message.toLowerCase().match(/^(![\w\-]+) (.+)/i);
-            const command = {
-                command: match[1], //first word (command)
-                args: match[2].split(",").map(str => str.trim()) // args cleaned up (no spaces)
-            };
-            getBannedWords(msg.guildId);
-            // delete word
-            let removed = bannedWords.pop(...command.args);
-            console.log(removed);
-
-            updateBannedWords(msg.guildId, bannedWords);
-            console.log(bannedWords);
-            return msg.reply(`updated banned words list:\n[${bannedWords.toString()}]`);
-
-        }
-
-        else if (message.startsWith('!bannedwordslist')){
-            getBannedWords(msg.guildId);
+        } else if (message.startsWith('!bannedwordslist')) {
+            await getBannedWords(msg.guildId);
             return msg.reply(`This is the banned words list:\n[${bannedWords.toString()}]`);
-        }
-        
-        else if (message.toLocaleLowerCase() == "!getaxios") {
+        } else if (message.toLocaleLowerCase() == "!getaxios") {
             axiosHTTPRequest();
 
             // --- deleteBannedWords : !deleteBannedWord <will delete the banned word from banned word list>
-        } 
-        
-        else if (message.startsWith('!getJoke')) {
+        } else if (message.startsWith('!getJoke')) {
             //Do nothing
-        }
-        
-        
-        else {
+        } else {
             return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
         }
     }
@@ -122,34 +99,35 @@ function axiosHTTPRequest() {
         });
 }
 
-function getBannedWords(serverID) {
-    axios({
-        method: 'get',
-        url: lambdaGetEndpoint + '/' + serverID,
-        headers: {'Content-Type': 'application/json'}
-    })
-        .then(function (response) {
-            //   console.log(response);
-            bannedWords = response.data.Item.bannedWords.SS;
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
-        .then(function () {
-            console.log("Got server's banned word list");
+async function getBannedWords(serverID) {
+    try {
+        let response = await axios({
+            method: 'get',
+            url: lambdaGetEndpoint + '/' + serverID,
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });
+        bannedWords = response.data.Item.bannedWords.SS;
+
+    } catch (error) {
+        console.log(error);
+    }
+
 }
 
 function updateBannedWords(serverID, bannedWords) {
     axios({
-        method: 'put',
-        url: lambdaGetEndpoint + '/' + serverID,
-        headers: {'Content-Type': 'application/json'},
-        data: bannedWords
-    })
+            method: 'put',
+            url: lambdaGetEndpoint + '/' + serverID,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: bannedWords
+        })
         .then(function (response) {
-               console.log(response.data);
-            //bannedWords = response.data.Item.bannedWords.SS;
+            // console.log(response.data);
+            bannedWords = response.data.Item.bannedWords.SS;
         })
         .catch(function (error) {
             console.log(error);
@@ -157,6 +135,37 @@ function updateBannedWords(serverID, bannedWords) {
         .then(function () {
             console.log("updated bannedwordslist");
         });
+}
+
+function deleteBannedWord(msg) {
+    axios({
+            method: 'get',
+            url: lambdaGetEndpoint + '/' + msg.guildId,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(function (response) {
+            //   console.log(response);
+            bannedWords = response.data.Item.bannedWords.SS;
+
+            let word = msg.content.replace('!deletebannedwords ', '');
+            console.log("word to remove " + word);
+
+            bannedWords.splice(bannedWords.indexOf(word), 1);
+
+            updateBannedWords(msg.guildId, bannedWords);
+            console.log(bannedWords);
+            return msg.reply(`updated banned words list: [${bannedWords.toString()}]`);
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+        .then(function () {
+            console.log("Got server's banned word list");
+        });
+
+
 }
 
 
