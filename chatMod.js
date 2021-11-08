@@ -28,6 +28,8 @@ bot.on('messageCreate', msg => {
     //ignore messages from bot
     if (msg.author.bot) return;
 
+    getBannedWords(msg.guildId);
+
     const message = msg.content;
 
     // ===== command handler =====
@@ -55,14 +57,39 @@ bot.on('messageCreate', msg => {
             updateBannedWords(msg.guildId, bannedWords); //Updates servers banned word list on the dynamoDB table
             console.log(bannedWords);
             return msg.reply(`updated banned words list:\n[${bannedWords.toString()}]`);
-        } else if (message.toLocaleLowerCase() == "!getaxios") {
+        }
+        
+        else if (message.startsWith('!deletebannedword')){
+            //TODO: Implement delete word 
+
+            const match = message.toLowerCase().match(/^(![\w\-]+) (.+)/i);
+            const command = {
+                command: match[1], //first word (command)
+                args: match[2].split(",").map(str => str.trim()) // args cleaned up (no spaces)
+            };
+            getBannedWords(msg.guildId);
+            // delete word
+            let removed = bannedWords.pop(...command.args);
+            console.log(removed);
+
+            updateBannedWords(msg.guildId, bannedWords);
+            console.log(bannedWords);
+            return msg.reply(`updated banned words list:\n[${bannedWords.toString()}]`);
+
+        }
+
+        else if (message.startsWith('!bannedwordslist')){
+            getBannedWords(msg.guildId);
+            return msg.reply(`This is the banned words list:\n[${bannedWords.toString()}]`);
+        }
+        
+        else if (message.toLocaleLowerCase() == "!getaxios") {
             axiosHTTPRequest();
 
             // --- deleteBannedWords : !deleteBannedWord <will delete the banned word from banned word list>
-        } else if (message.startsWith('!deletebannedwords')){
-            //TODO: Implement delete word 
-
-        } else if (message.startsWith('!getJoke')) {
+        } 
+        
+        else if (message.startsWith('!getJoke')) {
             //Do nothing
         }
         
@@ -73,7 +100,6 @@ bot.on('messageCreate', msg => {
     }
 
     // ===== banned words handler =====
-    getBannedWords(msg.guildId);
     const found = bannedWords.findIndex(str => message.toLowerCase().includes(str));
 
     if (found != -1) {
