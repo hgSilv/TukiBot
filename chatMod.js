@@ -84,12 +84,9 @@ bot.on('messageCreate', msg => {
 
 function axiosHTTPRequest() {
     // Make a request for a user with a given ID
-    axios({
-        method: 'get',
-        url: lambdaGetEndpoint
-    })
+    axios.get(lambdaGetEndpoint)
         .then(function (response) { // handle success
-            console.log(response.data.body);
+            console.log(response.data);
         })
         .catch(function (error) { // handle error
             console.log(error);
