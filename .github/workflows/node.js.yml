@@ -78,6 +78,7 @@ jobs:
         docker build -t paulina.arvizu .
         docker tag paulina.arvizu:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest
         docker images
+        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest
 
 
 
