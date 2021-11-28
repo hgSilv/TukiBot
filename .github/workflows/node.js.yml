@@ -74,12 +74,9 @@ jobs:
     #Docker
     - name: Build image
       id: build-image
-      env:
-          ECR_REGISTRY: paulina.arvizu
-          IMAGE_TAG: latest
       run: |
-      docker build -t $ECR_REGISTRY .
-      docker tag $ECR_REGISTRY:$IMAGE_TAG ${{ env.ECR_REPOSITORY  }}/$ECR_REGISTRY:$IMAGE_TAG
+      docker build -t paulina.arvizu .
+      docker tag paulina.arvizu:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest
       docker images
 
 
