@@ -28,8 +28,8 @@ jobs:
         cache: 'npm'
     - run: npm ci
   #  - run: node autoPosting.js
-    - run: echo ""
-      env: ${{ secrets.BOT_TOKEN }}
+    - run: echo "${{ secrets.BOT_TOKEN }}"
+      env: 
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
   
   deploy:
