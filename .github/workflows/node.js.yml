@@ -47,6 +47,10 @@ jobs:
 
     # AWS--------------------------------------------
     - run: aws configure
+    - run: ASIA3PSHVINO6TVQ7AFS
+    - run: Yr393QZpj1/3Tjl9mNp6zguwNRb1n5gqSAPIUZDp
+    - run: us-east-1
+    - run: json
 
     - name: Configure AWS credentials
       run: |
