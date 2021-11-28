@@ -55,7 +55,7 @@ jobs:
         echo "[default]
         aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY  }}
-        aws_session_token=FwoGZXIvYXdzEA0aDClQMz9HkgYh8TzN2SLGAbYmKFPPsEAfe276XC65C0FN/RGkB6wTxNlc3VGIL11v901SdEcVwiHgt+Mq4Os+zcZjI54SHrNesg7X8WssupkweDck6T6mTYIZAga0d/OjvinKs7Q94c4DBKUraXPX1L5BXDHgihiPuxA7O3tzm8JOb2fycI4IjsE2WcQFF6myPDySWAzL/wY8LghExvaVR9Mu055ukLr5XxnLSnK+pejNMLEW7LI4Fj3Pu4qgjKe1j/YegHUBgJB/ByM2BaOai4xz3WBouyjMqo+NBjItxV2KXE8L6pwANmwMU/+VBgeJxHghx1+l/bXcGS+YC93R2NDvQ+wdOsnD5cAh" > ~/.aws/credentials
+        aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}" > ~/.aws/credentials
         echo "[default]
         region = us-east-1
         output = json
