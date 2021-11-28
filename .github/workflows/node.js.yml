@@ -46,27 +46,13 @@ jobs:
     - run: npm ci
 
     # AWS--------------------------------------------
-    - run: aws configure
-    - run: ASIA3PSHVINO6TVQ7AFS
-    - run: Yr393QZpj1/3Tjl9mNp6zguwNRb1n5gqSAPIUZDp
-    - run: us-east-1
-    - run: json
 
-    - name: Configure AWS credentials
-      run: |
-        mkdir .aws
-        cd .aws
-        echo "[default]
-        aws_access_key_id=ASIA3PSHVINO6TVQ7AFS
-        aws_secret_access_key=Yr393QZpj1/3Tjl9mNp6zguwNRb1n5gqSAPIUZDp
-        aws_session_token=FwoGZXIvYXdzEA0aDClQMz9HkgYh8TzN2SLGAbYmKFPPsEAfe276XC65C0FN/RGkB6wTxNlc3VGIL11v901SdEcVwiHgt+Mq4Os+zcZjI54SHrNesg7X8WssupkweDck6T6mTYIZAga0d/OjvinKs7Q94c4DBKUraXPX1L5BXDHgihiPuxA7O3tzm8JOb2fycI4IjsE2WcQFF6myPDySWAzL/wY8LghExvaVR9Mu055ukLr5XxnLSnK+pejNMLEW7LI4Fj3Pu4qgjKe1j/YegHUBgJB/ByM2BaOai4xz3WBouyjMqo+NBjItxV2KXE8L6pwANmwMU/+VBgeJxHghx1+l/bXcGS+YC93R2NDvQ+wdOsnD5cAh" > credentials
-        echo "[default]
-        region = us-east-1
-        output = json
-        " > config
-        ls -la
-        cat credentials
-        cat config
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::789350531933:user/admin
+        aws-region: us-east-1
+   
      
 
     - name: Login to Amazon ECR
