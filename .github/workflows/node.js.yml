@@ -69,7 +69,7 @@ jobs:
 
     - name: Login to Amazon ECR
       id: login-ecr
-      run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 789350531933.dkr.ecr.us-east-1.amazonaws.com
+      run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY }}
 
     #Docker
     - name: Build image
@@ -77,8 +77,10 @@ jobs:
       env:
           ECR_REGISTRY: paulina.arvizu
           IMAGE_TAG: latest
-      run: docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-    - run: docker images
+      run: |
+      docker build -t $ECR_REGISTRY .
+      docker tag $ECR_REGISTRY:$IMAGE_TAG ${{ env.ECR_REPOSITORY  }}/$ECR_REGISTRY:$IMAGE_TAG
+      docker images
 
 
 
