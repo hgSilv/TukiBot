@@ -45,7 +45,7 @@ jobs:
     - run: echo "------------------Build Stage-------------------------"
     - run: npm ci
 
-    - run: cd ~
+    - run: cd .aws
     - run: ls -la
 
     # AWS--------------------------------------------
