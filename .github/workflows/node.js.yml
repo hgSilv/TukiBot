@@ -75,9 +75,9 @@ jobs:
     - name: Build image
       id: build-image
       run: |
-      docker build -t paulina.arvizu .
-      docker tag paulina.arvizu:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest
-      docker images
+        docker build -t paulina.arvizu .
+        docker tag paulina.arvizu:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest
+        docker images
 
 
 
