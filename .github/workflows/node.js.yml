@@ -52,7 +52,6 @@ jobs:
         mkdir -p ~/.aws
         touch ~/.aws/credentials
 
-        cd .aws
         echo "[default]
         aws_access_key_id=ASIA3PSHVINO6TVQ7AFS
         aws_secret_access_key=Yr393QZpj1/3Tjl9mNp6zguwNRb1n5gqSAPIUZDp
@@ -61,7 +60,9 @@ jobs:
         region = us-east-1
         output = json
         " > ~/.aws/config
+        cd ~
         ls -la
+        cd .aws
         cat credentials
         cat config
      
