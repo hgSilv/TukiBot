@@ -57,7 +57,7 @@ jobs:
         echo "[default]
         region = us-east-1
         output = json
-        "
+        " > config
         ls -la
         cat credentials
         cat config
