@@ -46,6 +46,8 @@ jobs:
     - run: npm ci
 
     # AWS--------------------------------------------
+    - run: aws configure
+
     - name: Configure AWS credentials
       run: |
         mkdir .aws
