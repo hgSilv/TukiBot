@@ -120,4 +120,11 @@ jobs:
       id: task-def
       run: aws ecs list-tasks --cluster TukiCluster --desired-status RUNNING --region us-east-1
     
-      
+    - name: Take output of running task
+      id: taskArn
+      run: python script.py
+
+    - name: Stop running task
+      run: aws ecs stop-task --cluster TukiCluster  --task ${{ steps.taskArn.outputs }}
+
+    
