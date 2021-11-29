@@ -44,7 +44,7 @@ jobs:
     
     - run: echo "------------------Build Stage-------------------------"
     - run: |
-        echo "BOT_TOKEN='${{ secrets.BOT_TOKEN }}'" > .env
+        echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" > .env
         cat .env
         ls -la
 
