@@ -34,6 +34,31 @@ exports.getReminders = functions.https.onRequest(async (req, res) => {
     res.send(reminderCollection);
 });
 
+exports.newReminder = functions.https.onRequest(async (req, res) => {
+    console.log(req.body);
+    const {
+        id
+    } = await admin.firestore().collection('reminders').add({
+        description: req.body.description,
+        date: admin.firestore.Timestamp.fromDate(new Date(req.body.timestamp)),
+        channel: req.body.channel
+    });
+
+    console.log(id);
+
+    res.status(201).send({
+        id: id,
+        body: req.body
+    });
+});
+
+exports.deleteReminder = functions.https.onRequest(async (req, res) => {
+    const response = await admin.firestore().collection('reminders').doc(req.query.doc).delete();
+    console.log(response);
+    res.send(response);
+});
+
+
 //// ==================== EXAMPLES ====================
 // Take the text parameter passed to this HTTP endpoint and insert it into 
 // Firestore under the path /messages/:documentId/original

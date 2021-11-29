@@ -5,9 +5,19 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, dev ]
   pull_request:
-    branches: [ master ]
+    branches: [ master, dev ]
+
+env:
+  AWS_REGION: us-east-1                  # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: 789350531933.dkr.ecr.us-east-1.amazonaws.com           # set this to your Amazon ECR repository name
+  ECS_CLUSTER: TukiCluster                 # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: tuki-task.json   # set this to the path to your Amazon ECS task definition
+                                               # file, e.g. .aws/task-definition.json
+  CONTAINER_NAME: Tuki-Container           # set this to the name of the container in the
+                                               # containerDefinitions section of your task definition
+
 
 jobs:
   build:
@@ -20,16 +30,58 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v2
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v2 #Setting up node
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+    
+    - run: echo "------------------Build Stage-------------------------"
     - run: npm ci
-    - run: node autoPosting.js
-  
+    - run: |
+        echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" > .env
+        cat .env
+        ls -la
+
+    # AWS--------------------------------------------
+
+    - name: Configure AWS credentials
+      run: |
+        mkdir -p ~/.aws
+        touch ~/.aws/credentials
+
+        echo "[default]
+        aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY  }}
+        aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}" > ~/.aws/credentials
+        echo "[default]
+        region = us-east-1
+        output = json
+        " > ~/.aws/config
+        pwd
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY }}
+
+    #Docker
+    - name: Build image
+      id: build-image
+      run: |
+        docker build -t paulina.arvizu .
+        docker tag paulina.arvizu:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest
+        docker images
+        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest
+
+
+
   deploy:
+    needs: [ build ]
     runs-on: ubuntu-latest
 
     strategy:
@@ -38,10 +90,40 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
+
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: echo "Deploy stage"
+    - run: echo "---------------Deploy stage---------------------"
+
+
+    - run: ls -la
+    - name: Configure AWS credentials
+      run: |
+        mkdir -p ~/.aws
+        touch ~/.aws/credentials
+
+        echo "[default]
+        aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY  }}
+        aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}" > ~/.aws/credentials
+        echo "[default]
+        region = us-east-1
+        output = json
+        " > ~/.aws/config
+        pwd
+
+    - name: Set up task
+      id: task-def
+      run: |
+        aws ecs list-tasks --cluster TukiCluster --desired-status RUNNING --region us-east-1 > running-tasks.json
+        var=$(python script.py)
+        echo "$var"
+        aws ecs stop-task --cluster TukiCluster  --task "$var"
+        aws ecs run-task --cluster TukiCluster --task-definition Tuki-Deploy
+
+
+    

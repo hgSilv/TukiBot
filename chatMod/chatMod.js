@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const axios = require('axios');
 const Discord = require('discord.js');
 
@@ -7,9 +7,7 @@ const bot = new Discord.Client({
 });
 
 
-var bannedWords = [
-
-];
+var bannedWords = [];
 
 
 const lambdaGetEndpoint = 'https://hnumqbz3j6.execute-api.us-east-1.amazonaws.com/dev-v1/bannedwords-';
@@ -34,46 +32,46 @@ bot.on('messageCreate', async (msg) => {
 
     // ===== command handler =====
     if (message.startsWith(commandPrefix)) {
-        // ===== hello world =====
-        if (message == '!helloworld') {
-            return msg.reply('hello to you! :)');
-        }
+        switch (true) {
+            case message == '!helloworld': { // ===== hello world =====
+                return msg.reply('hello to you! Tuki! :)');
+            }
 
-        // --- addBannedWord
-        if (message.startsWith("!addbannedword")) {
-            // extract command from the rest of the string
-            const match = message.toLowerCase().match(/^(![\w\-]+) (.+)/i);
-            const command = {
-                command: match[1], //first word (command)
-                args: match[2].split(",").map(str => str.trim()) // args cleaned up (no spaces)
-            };
-            await getBannedWords(msg.guildId);
-            //add words
-            bannedWords.push(...command.args);
+            case message.startsWith("!addbannedword"): { // --- addBannedWord
+                // remove command from the rest of the string
+                const str = message.replace('!addbannedword ', '');
+                const args = str.split(",").map(str => str.trim()); // args cleaned up (no spaces)
 
-            //remove duplicates
-            bannedWords = bannedWords.filter((item, index) => (bannedWords.indexOf(item) == index));
-            console.log(msg.guildId);
-            updateBannedWords(msg.guildId, bannedWords); //Updates servers banned word list on the dynamoDB table
-            console.log(bannedWords);
-            return msg.reply(`updated banned words list:\n[${bannedWords.toString()}]`);
-        } else if (message.startsWith('!deletebannedword')) {
-            //TODO: Implement delete word 
-            deleteBannedWord(msg);
-            return;
+                await getBannedWords(msg.guildId);
+                //add words
+                bannedWords.push(...args);
 
-        } else if (message.startsWith('!bannedwordslist')) {
-            await getBannedWords(msg.guildId);
-            return msg.reply(`This is the banned words list:\n[${bannedWords.toString()}]`);
-        } else if (message.toLocaleLowerCase() == "!getaxios") {
-            axiosHTTPRequest();
+                //remove duplicates
+                bannedWords = bannedWords.filter((item, index) => (bannedWords.indexOf(item) == index));
+                // console.log(msg.guildId);
+                updateBannedWords(msg.guildId, bannedWords); //Updates servers banned word list on the dynamoDB table
+                // console.log(bannedWords);
 
-            // --- deleteBannedWords : !deleteBannedWord <will delete the banned word from banned word list>
-        } else if (message.startsWith('!getJoke')) {
-            //Do nothing
-        } else {
-            return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
-        }
+                return msg.reply(`updated banned words list:\n[${bannedWords.toString()}]`);
+            }
+
+            case message.startsWith('!deletebannedword'):
+                deleteBannedWord(msg);
+                return;
+
+            case message.startsWith('!bannedwordslist'):
+                await getBannedWords(msg.guildId);
+                return msg.reply(`This is the banned words list:\n[${bannedWords.toString()}]`);
+
+            case message == '!getaxios':
+                axiosHTTPRequest();
+                // --- deleteBannedWords : !deleteBannedWord <will delete the banned word from banned word list>
+                return;
+            default:
+                console.log("ChatMod: command doesn't existe");
+                break;
+                // return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
+        };
     }
 
     // ===== banned words handler =====
