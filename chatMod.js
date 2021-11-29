@@ -36,7 +36,7 @@ bot.on('messageCreate', async (msg) => {
     if (message.startsWith(commandPrefix)) {
         switch (true) {
             case message == '!helloworld': { // ===== hello world =====
-                return msg.reply('hello to you! Tuki! :)');
+                return msg.reply('hello to you!!! :)');
             }
 
             case message.startsWith("!addbannedword"): { // --- addBannedWord
