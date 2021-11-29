@@ -42,6 +42,7 @@ jobs:
         cache: 'npm'
     
     - run: echo "------------------Build Stage-------------------------"
+    - run: npm ci
     - run: |
         echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" > .env
         cat .env
