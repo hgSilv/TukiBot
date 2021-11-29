@@ -44,7 +44,10 @@ jobs:
     
     - run: echo "------------------Build Stage-------------------------"
     - run: npm ci
-    - run: pwd
+    - run: |
+        echo "BOT_TOKEN='${{ secrets.BOT_TOKEN }}'" > .env
+        cat .env
+        ls -la
 
     # AWS--------------------------------------------
 
@@ -66,7 +69,6 @@ jobs:
         cd .aws
         cat credentials
         cat config
-        pwd
      
 
     - name: Login to Amazon ECR
