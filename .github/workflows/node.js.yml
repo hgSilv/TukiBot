@@ -126,6 +126,6 @@ jobs:
       run: cat running-tasks.json
 
     - name: Stop running task
-      run: aws ecs stop-task --cluster TukiCluster  --task ${{ steps.taskArn.outputs.taskArns[0] }}
+      run: aws ecs stop-task --cluster TukiCluster  --task ${{ steps.taskArn.outputs }}
 
     
