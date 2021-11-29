@@ -1,4 +1,5 @@
-require('dotenv').config()
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const axios = require('axios');
 const Discord = require('discord.js');
 
@@ -7,9 +8,7 @@ const bot = new Discord.Client({
 });
 
 
-var bannedWords = [
-
-];
+var bannedWords = [];
 
 
 const lambdaGetEndpoint = 'https://hnumqbz3j6.execute-api.us-east-1.amazonaws.com/dev-v1/bannedwords-';

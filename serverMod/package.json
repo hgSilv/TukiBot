@@ -2,7 +2,7 @@
   "name": "tukibot",
   "version": "0.0.0",
   "description": "Admin-aid and jokester bot. TUKI!",
-  "main": "chatMod.js",
+  "main": "serverMod.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

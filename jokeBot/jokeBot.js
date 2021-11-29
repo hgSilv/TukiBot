@@ -1,4 +1,5 @@
-require('dotenv').config()
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const axios = require('axios');
 const Discord = require('discord.js');
 
@@ -21,7 +22,7 @@ bot.once('ready', async (client) => {
 
 
 bot.on('messageCreate', msg => {
-    console.log(msg);
+    // console.log(msg);
     //ignore messages from bot
     if (msg.author.bot) return;
 
