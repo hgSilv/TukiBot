@@ -119,12 +119,13 @@ jobs:
     - name: See current running task
       id: task-def
       run: aws ecs list-tasks --cluster TukiCluster --desired-status RUNNING --region us-east-1 > running-tasks.json
+        
     
     - name: Take output of running task
       id: taskArn
-      run: python script.py
+      run: cat running-tasks.json
 
     - name: Stop running task
-      run: aws ecs stop-task --cluster TukiCluster  --task ${{ steps.taskArn.outputs }}
+      run: aws ecs stop-task --cluster TukiCluster  --task ${{ steps.taskArn.outputs.taskArn[0] }}
 
     
