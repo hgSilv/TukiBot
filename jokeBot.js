@@ -6,20 +6,17 @@ const bot = new Discord.Client({
     intents: ["GUILDS", "GUILD_MESSAGES"]
 });
 
-let reminders = [];
 let joke;
 
 const firebaseJokesUrl = 'https://us-central1-tukibot-proyecto-cloud-331101.cloudfunctions.net/getRandomJoke';
-const firebaseRemindersUrl = 'https://us-central1-tukibot-proyecto-cloud-331101.cloudfunctions.net/getReminders';
 const commandPrefix = "!";
 
 
 // const channel = await bot.channels.get('897207800831307796');
 
-bot.once('ready', client => {
-    console.log('================================= AUTO-POSTING =================================');
+bot.once('ready', async (client) => {
+    console.log('================================= JOKE-BOT =================================');
     // client.channels.cache.get('897207800831307796').send('TUKI BOT ready! :)'); //send message to "test" channel
-    // getReminders();
 });
 
 
@@ -32,14 +29,17 @@ bot.on('messageCreate', msg => {
 
     // ===== command handler =====
     if (message.startsWith(commandPrefix)) {
-        // ===== get random joke =====
-        if (message == '!getjoke') {
-            sendRandomJoke(msg);
-            return;
+        switch (true) {
+            case message == '!getjoke': { // ===== get random joke =====
+                sendRandomJoke(msg);
+                return;
+            }
+
+            default:
+                console.log("JokeBot: command doesn't exist");
+                break;
+                // return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
         }
-
-       return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
-
     }
 
 
@@ -53,27 +53,13 @@ function sendRandomJoke(msg) {
             let reply = (joke.text != '' && joke.imageUrl != '') ?
                 `${joke.text}\n${joke.imageUrl}` :
                 joke.text + joke.imageUrl;
-                
+
             return bot.channels.cache.get(msg.channelId).send('Tuki-hello! This is a random joke. <:just_a_froggo:907077167253450764>\n' + reply);
         })
         .catch((error) => {
             console.log(error);
         })
-        .then(function () {
-            console.log("Success: POST request to " + firebaseJokesUrl);
-        });
-}
-
-function getReminders() {
-    axios.post(firebaseRemindersUrl)
-        .then((response) => {
-            reminders = response.data;
-            console.log(reminders);
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-        .then(function () {
+        .then(() => {
             console.log("Success: POST request to " + firebaseJokesUrl);
         });
 }
