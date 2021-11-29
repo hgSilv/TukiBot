@@ -119,7 +119,7 @@ jobs:
     - name: Set up task
       id: task-def
       run: |
-        aws ecs list-tasks --cluster TukiCluster --desired-status RUNNING --region us-east-1
+        aws ecs list-tasks --cluster TukiCluster --desired-status RUNNING --region us-east-1 > running-tasks.json
         var=$(python script.py)
        # aws ecs stop-task --cluster TukiCluster  --task ${{ steps.task-def.outputs }}
 
