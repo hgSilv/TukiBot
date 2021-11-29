@@ -116,12 +116,11 @@ jobs:
         " > ~/.aws/config
         pwd
 
-    - name: See current running task
+    - name: Set up task
       id: task-def
-      run: aws ecs list-tasks --cluster TukiCluster --desired-status RUNNING --region us-east-1
-      
-
-    - name: Stop running task
-      run: aws ecs stop-task --cluster TukiCluster  --task ${{ steps.task-def.outputs }}
+      run: |
+        aws ecs list-tasks --cluster TukiCluster --desired-status RUNNING --region us-east-1
+        var=$(python script.py)
+       # aws ecs stop-task --cluster TukiCluster  --task ${{ steps.task-def.outputs }}
 
     
