@@ -64,11 +64,7 @@ jobs:
         region = us-east-1
         output = json
         " > ~/.aws/config
-        cd ~
-        ls -la
-        cd .aws
-        cat credentials
-        cat config
+        pwd
 
     - name: Login to Amazon ECR
       id: login-ecr
