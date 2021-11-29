@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 const axios = require('axios');
 const Discord = require('discord.js');
 const schedule = require('node-schedule');
@@ -80,7 +80,7 @@ async function getReminders() {
                 id: e.id,
                 date: new Date(e.data.date._seconds * 1000),
                 description: e.data.description,
-                channel: e.data.channel
+                channelID: e.data.channel
             }
         });
         console.log(reminders);
@@ -111,9 +111,6 @@ async function newReminder(msg, description, date, channelID) {
     } catch (err) {
         console.log(err);
     }
-
-
-
 }
 
 function scheduleReminder(client, reminder) {

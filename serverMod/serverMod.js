@@ -22,6 +22,11 @@ bot.on('messageCreate', msg => {
         if (message == '!hiservermod') {
             return msg.reply('Tuki-hi! Im able to mod your server. TUKI <:just_a_froggo:907077167253450764>');
         }
+        if (!message.startsWith('!mute') &&
+            !message.startsWith('!unmute') &&
+            !message.startsWith('!warn') &&
+            !message.startsWith('!ban'))
+            return;
 
         // check permissions
         const senderRoles = msg.member.roles.cache.map(role => role.name);
