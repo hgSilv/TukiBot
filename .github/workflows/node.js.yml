@@ -98,8 +98,23 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: echo "---------------Deploy stage---------------------"
-    - run: ls -la
 
+
+    - run: ls -la
+    - name: Configure AWS credentials
+      run: |
+        mkdir -p ~/.aws
+        touch ~/.aws/credentials
+
+        echo "[default]
+        aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY  }}
+        aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}" > ~/.aws/credentials
+        echo "[default]
+        region = us-east-1
+        output = json
+        " > ~/.aws/config
+        pwd
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def
