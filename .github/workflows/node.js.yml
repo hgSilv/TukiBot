@@ -13,7 +13,7 @@ env:
   AWS_REGION: us-east-1                  # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: 789350531933.dkr.ecr.us-east-1.amazonaws.com           # set this to your Amazon ECR repository name
   ECS_CLUSTER: TukiCluster                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: tuki-deploy.json   # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: tuki-task.json   # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: Tuki-Container           # set this to the name of the container in the
                                                # containerDefinitions section of your task definition
@@ -100,8 +100,17 @@ jobs:
     - run: echo "---------------Deploy stage---------------------"
     - run: ls -la
 
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
+      with:
+        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        container-name: ${{ env.CONTAINER_NAME }}
+        image: ${{ 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest }}
+
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
       with:
-        task-definition: ${{ env.ECS_TASK_DEFINITION }}
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
         cluster: ${{ env.ECS_CLUSTER }}
