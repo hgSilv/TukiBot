@@ -44,6 +44,7 @@ jobs:
     
     - run: echo "------------------Build Stage-------------------------"
     - run: npm ci
+    - run: pwd
 
     # AWS--------------------------------------------
 
@@ -65,6 +66,8 @@ jobs:
         cd .aws
         cat credentials
         cat config
+        cd ..
+        pwd
      
 
     - name: Login to Amazon ECR
