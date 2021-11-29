@@ -122,6 +122,8 @@ jobs:
         aws ecs list-tasks --cluster TukiCluster --desired-status RUNNING --region us-east-1 > running-tasks.json
         var=$(python script.py)
         echo "$var"
-       # aws ecs stop-task --cluster TukiCluster  --task ${{ steps.task-def.outputs }}
+        aws ecs stop-task --cluster TukiCluster  --task "$var"
+        aws ecs run-task --cluster TukiCluster --task-definition Tuki-Deploy
+
 
     
