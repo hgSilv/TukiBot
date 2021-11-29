@@ -66,7 +66,6 @@ jobs:
         cd .aws
         cat credentials
         cat config
-        cd ..
         pwd
      
 
