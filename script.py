@@ -1,4 +1,5 @@
 import json;
 
 out = json.loads(open('running-tasks.json', 'r').read())
-print(out['taskArns'][0])
+if(len(out)>1):
+    print(out['taskArns'][0])
