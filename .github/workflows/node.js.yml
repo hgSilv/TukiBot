@@ -118,7 +118,7 @@ jobs:
 
     - name: See current running task
       id: task-def
-      run: aws ecs list-tasks --cluster TukiCluster --desired-status RUNNING --region us-east-1
+      run: aws ecs list-tasks --cluster TukiCluster --desired-status RUNNING --region us-east-1 > running-tasks.json
     
     - name: Take output of running task
       id: taskArn
