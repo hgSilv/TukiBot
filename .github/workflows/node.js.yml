@@ -69,7 +69,6 @@ jobs:
         cd .aws
         cat credentials
         cat config
-     
 
     - name: Login to Amazon ECR
       id: login-ecr
