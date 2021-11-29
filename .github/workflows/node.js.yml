@@ -107,7 +107,7 @@ jobs:
       with:
         task-definition: ${{ env.ECS_TASK_DEFINITION }}
         container-name: ${{ env.CONTAINER_NAME }}
-        image: ${{ 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest }}
+        image: 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
