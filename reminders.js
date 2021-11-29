@@ -61,11 +61,11 @@ bot.on('messageCreate', async (msg) => {
 
                 await newReminder(msg, args[4], date, channel.id);
                 break;
-            case message == '!getjoke':
-                break;
+            
             default:
-                console.log("command doesn't exist");
-                return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
+                console.log("Reminders: command doesn't exist");
+                break;
+                // return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
         }
     }
 

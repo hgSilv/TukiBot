@@ -35,16 +35,10 @@ bot.on('messageCreate', msg => {
                 return;
             }
 
-            case message == '!helloworld':
-            case message.startsWith("!addbannedword"):
-            case message.startsWith('!deletebannedword'):
-            case message.startsWith('!bannedwordslist'):
-            case message == '!getaxios':
-            case message.startsWith('!newreminder'):
-                break;
             default:
-                console.log("command doesn't exist");
-                return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
+                console.log("JokeBot: command doesn't exist");
+                break;
+                // return msg.reply('Tuki-sorry! This command does not exist. <:sad_frog:900930416075243550>');
         }
     }
 
