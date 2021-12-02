@@ -152,17 +152,25 @@ jobs:
         " > ~/.aws/config
         pwd
 
-    - name: Set up tasks in cluster
-      id: task-def
+    - name: Delete all tasks if any
+      id: task-kill
       run: |
         aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0]
-        aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0]
-        aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0]
-        aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0]
+        aws ecs stop-task --cluster Ultra-TukiCluster --task $(aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0])
+        aws ecs stop-task --cluster Ultra-TukiCluster --task $(aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0])
+        aws ecs stop-task --cluster Ultra-TukiCluster --task $(aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0])
+        aws ecs stop-task --cluster Ultra-TukiCluster --task $(aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0])
+      continue-on-error: true
+    
+    
+      - name: Set up tasks in cluster
+      if: task-setup
+      run: |
         aws ecs run-task --cluster Ultra-TukiCluster --placement-constraints type=distinctInstance --task-definition deploy-chatmod
         aws ecs run-task --cluster Ultra-TukiCluster --placement-constraints type=distinctInstance --task-definition deploy-jokebot
         aws ecs run-task --cluster Ultra-TukiCluster --placement-constraints type=distinctInstance --task-definition deploy-reminders
-        aws ecs run-task --cluster Ultra-TukiCluster --placement-constraints type=distinctInstance --task-definition deploy-servermod 
+        aws ecs run-task --cluster Ultra-TukiCluster --placement-constraints type=distinctInstance --task-definition deploy-servermod
+
 
 
     
