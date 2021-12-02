@@ -66,6 +66,7 @@ jobs:
         output = json
         " > ~/.aws/config
         pwd
+        ls -la
 
     - name: Login to Amazon ECR 
       id: login-ecr
