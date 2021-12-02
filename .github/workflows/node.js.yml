@@ -164,7 +164,7 @@ jobs:
     
     
     - name: Set up tasks in cluster
-      if: task-setup
+      id: task-setup
       run: |
         aws ecs run-task --cluster Ultra-TukiCluster --placement-constraints type=distinctInstance --task-definition deploy-chatmod
         aws ecs run-task --cluster Ultra-TukiCluster --placement-constraints type=distinctInstance --task-definition deploy-jokebot
