@@ -101,10 +101,10 @@ jobs:
       id: build-image-jokeBot
       run: |
         cd jokeBot
-        docker build -t jokeBot .
-        docker tag jokeBot:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/jokeBot:latest
+        docker build -t jokebot .
+        docker tag jokeBot:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/jokebot:latest
         docker images
-        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/jokeBot:latest
+        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/jokebot:latest
 
     #serverMod
     - name: Build image for serverMod
