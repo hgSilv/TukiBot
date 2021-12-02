@@ -102,7 +102,7 @@ jobs:
       run: |
         cd jokeBot
         docker build -t jokebot .
-        docker tag jokeBot:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/jokebot:latest
+        docker tag jokebot:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/jokebot:latest
         docker images
         docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/jokebot:latest
 
