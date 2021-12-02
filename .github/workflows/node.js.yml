@@ -163,7 +163,7 @@ jobs:
       continue-on-error: true
     
     
-      - name: Set up tasks in cluster
+    - name: Set up tasks in cluster
       if: task-setup
       run: |
         aws ecs run-task --cluster Ultra-TukiCluster --placement-constraints type=distinctInstance --task-definition deploy-chatmod
