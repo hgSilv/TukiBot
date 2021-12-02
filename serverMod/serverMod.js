@@ -25,7 +25,7 @@ bot.on('messageCreate', msg => {
         if (!message.startsWith('!mute') &&
             !message.startsWith('!unmute') &&
             !message.startsWith('!warn') &&
-            !message.startsWith('!ban'))
+            !message.startsWith('!ban '))
             return;
 
         // check permissions
