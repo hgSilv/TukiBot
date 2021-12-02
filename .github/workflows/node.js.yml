@@ -44,8 +44,10 @@ jobs:
     - run: echo "------------------Build Stage-------------------------"
     - run: npm ci
     - run: |
-        echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" > .env
-        cat .env
+        echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" > /chatMod/.env
+        echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" > /jokeBot/.env
+        echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" > /reminders/.env
+        echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" > /serverMod/.env
         ls -la
 
     # AWS--------------------------------------------
@@ -57,7 +59,7 @@ jobs:
 
         echo "[default]
         aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY  }}
+        aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY  }} 
         aws_session_token=${{ secrets.AWS_SESSION_TOKEN }}" > ~/.aws/credentials
         echo "[default]
         region = us-east-1
@@ -65,20 +67,53 @@ jobs:
         " > ~/.aws/config
         pwd
 
-    - name: Login to Amazon ECR
+    - name: Login to Amazon ECR 
       id: login-ecr
       run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ env.ECR_REPOSITORY }}
 
     #Docker
-    - name: Build image
-      id: build-image
+
+    #chatMod
+
+    - name: Build image for chatmod
+      id: build-image-chatmod
       run: |
-        docker build -t paulina.arvizu .
-        docker tag paulina.arvizu:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest
+        cd /chatMod
+        docker build -t chatmod .
+        docker tag chatmod:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/chatmod:latest
         docker images
-        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/paulina.arvizu:latest
+        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/chatmod:latest
+
+    #reminders
+    - name: Build image for reminders
+      id: build-image-reminders
+      run: |
+        cd ../reminders
+        docker build -t reminders .
+        docker tag reminders:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/reminders:latest
+        docker images
+        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/reminders:latest
 
 
+    #jokeBot
+    - name: Build image for jokeBot
+      id: build-image-jokeBot
+      run: |
+        cd ../jokeBot
+        docker build -t jokeBot .
+        docker tag jokeBot:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/jokeBot:latest
+        docker images
+        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/jokeBot:latest
+
+    #serverMod
+    - name: Build image for serverMod
+      id: build-image-serverMod
+      run: |
+        cd ../serverMod
+        docker build -t serverMod .
+        docker tag serverMod:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/serverMod:latest
+        docker images
+        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/serverMod:latest
 
   deploy:
     needs: [ build ]
