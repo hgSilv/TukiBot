@@ -159,10 +159,10 @@ jobs:
         aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0]
         aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0]
         aws ecs list-tasks --cluster Ultra-TukiCluster --output text --query taskArns[0]
-        aws ecs run-task --cluster Ultra-TukiCluster --task-definition deploy-chatmod
-        aws ecs run-task --cluster Ultra-TukiCluster --task-definition deploy-jokebot
-        aws ecs run-task --cluster Ultra-TukiCluster --task-definition deploy-reminders
-        aws ecs run-task --cluster Ultra-TukiCluster --task-definition deploy-servermod
+        aws ecs run-task --cluster Ultra-TukiCluster --task-definition deploy-chatmod --placement-constraints distinctInstance
+        aws ecs run-task --cluster Ultra-TukiCluster --task-definition deploy-jokebot --placement-constraints distinctInstance
+        aws ecs run-task --cluster Ultra-TukiCluster --task-definition deploy-reminders --placement-constraints distinctInstance
+        aws ecs run-task --cluster Ultra-TukiCluster --task-definition deploy-servermod --placement-constraints distinctInstance
 
 
     
