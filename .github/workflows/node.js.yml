@@ -89,7 +89,6 @@ jobs:
     - name: Build image for reminders
       id: build-image-reminders
       run: |
-        cd ..
         ls -la
         docker build -t reminders .
         docker tag reminders:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/reminders:latest
