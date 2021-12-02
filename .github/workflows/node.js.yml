@@ -89,7 +89,7 @@ jobs:
     - name: Build image for reminders
       id: build-image-reminders
       run: |
-        ls -la
+        cd reminders
         docker build -t reminders .
         docker tag reminders:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/reminders:latest
         docker images
@@ -100,7 +100,7 @@ jobs:
     - name: Build image for jokeBot
       id: build-image-jokeBot
       run: |
-        cd ../jokeBot
+        cd jokeBot
         docker build -t jokeBot .
         docker tag jokeBot:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/jokeBot:latest
         docker images
@@ -110,7 +110,7 @@ jobs:
     - name: Build image for serverMod
       id: build-image-serverMod
       run: |
-        cd ../serverMod
+        cd serverMod
         docker build -t serverMod .
         docker tag serverMod:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/serverMod:latest
         docker images
