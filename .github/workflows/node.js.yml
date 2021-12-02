@@ -111,10 +111,10 @@ jobs:
       id: build-image-serverMod
       run: |
         cd serverMod
-        docker build -t serverMod .
-        docker tag serverMod:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/serverMod:latest
+        docker build -t servermod .
+        docker tag servermod:latest 789350531933.dkr.ecr.us-east-1.amazonaws.com/servermod:latest
         docker images
-        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/serverMod:latest
+        docker push 789350531933.dkr.ecr.us-east-1.amazonaws.com/servermod:latest
 
   deploy:
     needs: [ build ]
